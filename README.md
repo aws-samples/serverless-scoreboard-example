@@ -11,7 +11,42 @@ The size of the tiers can be changed and tiers recalculated on the fly to optimi
 
 For the highest tier the accouracy of the "What rank does player X have" query is 100% accurate. The further down the ranks and the lower the recalculation frequency of the tiers the less accurate the score is over time. The drift in accuracy occures when player Y from a lower tier then player X passes player X, then that wount be detected until next recalculation of the tiers. If player X moves tiers then the implementation is still accurate.
 
+## Data Model.
+The data model in this example expands on the examples in https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html#GSI.scenario.
 
+The supported access patterns are.
+
+Customer facing Queries.
+Query list of players sorted by score for a game.
+Query the score of a player.
+
+Supporting Queries.
+Distinct games.
+Count players for a game within a score range.
+Number of players in each score range (tier).
+
+The table has Hashkey toplist_pk, Rangekey toplist_sk and two GSI´s.
+GSI 1. game-scores-index with keys toplist_pk and score.
+GSI 2. game-tiers-index with keys toplist_pk and from_score.
+````
+|toplist_pk|toplist_sk|score|nr_players|from_score|to_score|
+|games     |unicorns  |     |          |          |        |
+|games     |dragons   |     |          |          |        |
+|unicorns  |player1   | 2422|          |          |        |
+|unicorns  |player2   |  122|          |          |        |
+|unicorns  |player3   |   30|          |          |        |
+|unicorns  |tier#0    |     |         1|         0|     999|
+|unicorns  |tier#1000 |     |         1|      1000|    1999|
+|unicorns  |tier#2000 |     |         1|      2000|    2999|
+|dragons   |player1   | 3240|          |          |        |
+|dragons   |player2   | 2122|          |          |        |
+|dragons   |player3   | 2032|          |          |        |
+|dragons   |player4   |  302|          |          |        |
+|dragons   |tier#0    |     |         1|         0|     999|
+|dragons   |tier#1000 |     |         1|      1000|    1999|
+|dragons   |tier#2000 |     |         2|      2000|    2999|
+|dragons   |tier#3000 |     |         1|      3000|    3999|
+````
 ## Setup 
 
 ### Deploying 
