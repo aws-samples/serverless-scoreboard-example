@@ -47,6 +47,41 @@ GSI 2. game-tiers-index with keys toplist_pk and from_score.
 |dragons   |tier#2000 |     |         2|      2000|    2999|
 |dragons   |tier#3000 |     |         1|      3000|    3999|
 ````
+
+Query player score.
+```python
+    game = 'dragons'
+    player = 'player3'
+    player_score_response = table.query(
+        KeyConditionExpression=Key(GAME).eq(game) & Key(PLAYER).eq(player),
+    )
+```
+
+Query player rank.
+```python
+    tiers_above = table.query(
+        IndexName='game-tier-index',
+        KeyConditionExpression=Key(GAME).eq(game) & Key(FROM_SCORE).gt(player_score),
+    )
+    for tier in tiers_above['Items']:
+        player_ranking += tier['count']
+    ''' 1 tier above player3´s tier with 1 player in it '''
+    
+    ''' 
+      now query player3´s tier and see how many players have higher score then player3 
+      but first we need to figure out where player3´s tier ends. The tiers retrieved above
+      are sorted in a asecending order and contain the range
+    '''
+    next_tier_from_score = tiers_above['Items'][0]['from_score']
+    my_tier = table.query(
+        IndexName='game-score-index',
+        KeyConditionExpression=Key(GAME).eq(game)
+        & Key(SCORE).between(player_score, next_tier_from_score - 1),
+        Select='COUNT',
+        ScanIndexForward=False,
+    )
+    player_ranking += my_tier['Count']
+```
 ## Setup 
 
 ### Deploying 
