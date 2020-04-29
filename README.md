@@ -17,13 +17,13 @@ The data model in this example expands on the examples in https://docs.aws.amazo
 The supported access patterns are.
 
 Customer facing Queries.
-Query list of players sorted by score for a game.
-Query the score of a player.
+* Query list of players sorted by score for a game.
+* Query the score of a player.
 
 Supporting Queries.
-Distinct games.
-Count players for a game within a score range.
-Number of players in each score range (tier).
+* Distinct games.
+* Count players for a game within a score range.
+* Number of players in each score range (tier).
 
 The table has Hashkey toplist_pk, Rangekey toplist_sk and two GSI´s.
 GSI 1. game-scores-index with keys toplist_pk and score.
