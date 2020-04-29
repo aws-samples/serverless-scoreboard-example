@@ -65,9 +65,9 @@ Query player rank.
     )
     for tier in tiers_above['Items']:
         player_ranking += tier['count']
-    ''' 1 tier above player3´s tier with 1 player in it '''
-    
     ''' 
+      1 tier above player3´s tier with 1 player in it 
+      
       now query player3´s tier and see how many players have higher score then player3 
       but first we need to figure out where player3´s tier ends. The tiers retrieved above
       are sorted in a asecending order and contain the range
