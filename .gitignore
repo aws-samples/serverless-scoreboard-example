@@ -1,0 +1,12 @@
+test.py
+node_modules
+package-lock.json
+.env
+.idea
+.DS_Store
+lambda/.dist/
+*.egg-info
+cdk.out
+__pycache__
+tmp
+venv
