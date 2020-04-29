@@ -18,7 +18,7 @@ The supported access patterns are.
 
 Customer facing Queries.
 * Query list of players sorted by score for a game.
-* Query the score of a player.
+* Query the ranking and score of a player.
 
 Supporting Queries.
 * Distinct games.
